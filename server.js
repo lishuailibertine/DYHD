@@ -4,7 +4,7 @@ const { Server: WebSocketServer } = require('ws');
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
-const port = 5000;
+const port = 5001;
 
 // 创建 Next.js 应用
 const app = next({ dev, hostname, port });

@@ -25,6 +25,16 @@
 - 📱 **响应式设计** - 适配各种屏幕
 - ⚡ **高性能** - 优化的事件处理和动画
 
+## ⚠️ 重要说明
+
+**本项目使用 5001 端口**（而不是默认的 5000），原因如下：
+
+- ✅ 避免与扣子编程环境的预览服务冲突（端口 5000）
+- ✅ 支持同时运行扣子预览和本地开发
+- ✅ 减少端口占用冲突
+
+**访问地址**：`http://localhost:5001`
+
 ## 📦 快速开始
 
 ### 同步到本地（Mac 用户）⭐
@@ -93,7 +103,9 @@ GAME_ID=your_game_id
 pnpm dev
 ```
 
-服务器将在 `http://localhost:5000` 启动。
+服务器将在 `http://localhost:5001` 启动。
+
+**⚠️ 注意**：项目使用 **5001 端口**（而不是 5000），以避免与扣子编程环境的预览服务冲突。
 
 ## 📺 页面导航
 
@@ -149,7 +161,7 @@ pnpm dev
 
 2. **配置浏览器源**
    - 在 OBS 中添加"浏览器"来源
-   - URL: `http://localhost:5000/stream`
+   - URL: `http://localhost:5001/stream`
    - 宽度: 1920
    - 高度: 1080
 
@@ -178,7 +190,7 @@ pnpm dev
 
 ### 方式三：浏览器全屏
 
-1. 在浏览器中打开推流页面：`http://localhost:5000/stream`
+1. 在浏览器中打开推流页面：`http://localhost:5001/stream`
 2. 按 F11 进入全屏模式
 3. 在直播伴侣中选择屏幕录制或窗口录制
 
@@ -225,7 +237,7 @@ pnpm dev
 
 ### 2. WebSocket 接口
 
-**地址**: `ws://localhost:5000/api/ws`
+**地址**: `ws://localhost:5001/api/ws`
 
 实时推送所有游戏事件。
 
@@ -266,7 +278,7 @@ POST https://your-domain.com/api/douyin/webhook
 
 访问在线测试页面：
 ```
-http://localhost:5000/test.html
+http://localhost:5001/test.html
 ```
 
 手动发送测试弹幕和礼物，快速验证功能。
@@ -295,12 +307,12 @@ chmod +x scripts/test-local.sh
    ```
 3. 启动内网穿透：
    ```bash
-   ngrok http 5000
+   ngrok http 5001
    ```
 4. 复制公网地址（如：`https://abc123.ngrok-free.app`）
 5. 在抖音开放平台配置 Webhook：
    ```
-   https://abc123.ngrok-free.app/api/douyin/webhook
+   https://abc123-ngrok-free.app/api/douyin/webhook
    ```
 
 #### 方法4：使用 frp
@@ -309,7 +321,7 @@ chmod +x scripts/test-local.sh
 
 ### 测试工具
 
-访问 `http://localhost:5000/test.html` 使用在线测试工具。
+访问 `http://localhost:5001/test.html` 使用在线测试工具。
 
 ### 2. API 测试
 
@@ -325,7 +337,7 @@ curl -X POST -H "Content-Type: application/json" \
     },
     "sign": "test"
   }' \
-  http://localhost:5000/api/douyin/webhook
+  http://localhost:5001/api/douyin/webhook
 ```
 
 ## 📁 项目结构
@@ -429,7 +441,7 @@ chmod +x scripts/deploy-ngrok.sh
 pnpm dev
 
 # 终端2：启动 ngrok
-ngrok http 5000
+ngrok http 5001
 ```
 
 复制 ngrok 提供的 HTTPS 地址即可访问。
