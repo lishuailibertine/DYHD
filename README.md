@@ -97,6 +97,27 @@ DOUYIN_ROOM_ID=your_room_id
 GAME_ID=your_game_id
 ```
 
+### 4. 环境检查（可选）
+
+如果遇到启动问题，运行诊断脚本：
+
+**Mac/Linux:**
+```bash
+./scripts/diagnose.sh
+```
+
+**Windows:**
+```cmd
+scripts\diagnose.bat
+```
+
+诊断脚本会检查环境配置并给出修复建议。
+
+### 5. 启动开发服务器
+DOUYIN_ROOM_ID=your_room_id
+GAME_ID=your_game_id
+```
+
 ### 3. 启动开发服务器
 
 **模式1：开发模式（推荐日常开发）**
@@ -504,9 +525,11 @@ MIT License
 
 ## 📞 技术支持
 
-- 项目文档：[README.md](README.md)
-- 推流指南：[docs/streaming-guide.md](docs/streaming-guide.md)
-- 对接指南：[docs/douyin-integration-guide.md](docs/douyin-integration-guide.md)
+- 📖 **故障排除**：[docs/troubleshooting.md](docs/troubleshooting.md) - 遇到问题？先看这里
+- 🔧 **环境诊断**：运行 `./scripts/diagnose.sh`（Mac/Linux）或 `scripts\diagnose.bat`（Windows）
+- 📚 **项目文档**：[README.md](README.md)
+- 🎥 **推流指南**：[docs/streaming-guide.md](docs/streaming-guide.md)
+- 🔗 **对接指南**：[docs/douyin-integration-guide.md](docs/douyin-integration-guide.md)
 
 ---
 
