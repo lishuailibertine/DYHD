@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>弹幕测试工具</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">抖音弹幕 API 测试工具</h1>
+    
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2">API URL</label>
+        <input type="text" id="apiUrl" value="http://localhost:5000/api/douyin/webhook" 
+               class="w-full p-2 bg-gray-800 border border-gray-700 rounded">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium mb-2">事件类型</label>
+        <select id="eventType" class="w-full p-2 bg-gray-800 border border-gray-700 rounded">
+          <option value="danmaku">弹幕</option>
+          <option value="gift">礼物</option>
+          <option value="like">点赞</option>
+          <option value="follow">关注</option>
+        </select>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium mb-2">用户名</label>
+        <input type="text" id="userName" value="测试用户" 
+               class="w-full p-2 bg-gray-800 border border-gray-700 rounded">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium mb-2">弹幕内容</label>
+        <input type="text" id="danmakuContent" value="治疗" 
+               class="w-full p-2 bg-gray-800 border border-gray-700 rounded">
+      </div>
+      
+      <button onclick="sendDanmaku()" 
+              class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold transition">
+        发送弹幕
+      </button>
+      
+      <button onclick="sendGift()" 
+              class="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded font-bold transition">
+        发送礼物
+      </button>
+    </div>
+    
+    <div class="mt-8">
+      <h2 class="text-xl font-bold mb-4">测试按钮（快速发送）</h2>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="quickSend('治疗')" class="bg-green-600 hover:bg-green-700 p-2 rounded">治疗</button>
+        <button onclick="quickSend('攻击')" class="bg-yellow-600 hover:bg-yellow-700 p-2 rounded">攻击</button>
+        <button onclick="quickSend('护盾')" class="bg-blue-600 hover:bg-blue-700 p-2 rounded">护盾</button>
+        <button onclick="quickSend('必杀技')" class="bg-purple-600 hover:bg-purple-700 p-2 rounded">必杀技</button>
+      </div>
+    </div>
+    
+    <div class="mt-8">
+      <h2 class="text-xl font-bold mb-4">响应日志</h2>
+      <div id="log" class="bg-gray-800 p-4 rounded h-64 overflow-y-auto font-mono text-sm">
+        <p class="text-gray-400">等待发送请求...</p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function log(message, isError = false) {
+      const logDiv = document.getElementById('log');
+      const time = new Date().toLocaleTimeString();
+      const p = document.createElement('p');
+      p.className = isError ? 'text-red-400' : 'text-green-400';
+      p.textContent = `[${time}] ${message}`;
+      logDiv.appendChild(p);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    async function sendDanmaku() {
+      const apiUrl = document.getElementById('apiUrl').value;
+      const eventType = document.getElementById('eventType').value;
+      const userName = document.getElementById('userName').value;
+      const content = document.getElementById('danmakuContent').value;
+      
+      const payload = {
+        event_type: eventType,
+        data: {
+          user_id: 'test_user_' + Math.random().toString(36).substr(2, 9),
+          user_name: userName,
+          content: content,
+          timestamp: Date.now(),
+        },
+        sign: 'test_signature'
+      };
+      
+      log(`发送弹幕: ${content} (用户: ${userName})`);
+      
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          log(`✓ 发送成功: ${JSON.stringify(result)}`);
+        } else {
+          log(`✗ 发送失败: ${JSON.stringify(result)}`, true);
+        }
+      } catch (error) {
+        log(`✗ 请求错误: ${error.message}`, true);
+      }
+    }
+    
+    async function sendGift() {
+      const apiUrl = document.getElementById('apiUrl').value;
+      const userName = document.getElementById('userName').value;
+      
+      const payload = {
+        event_type: 'gift',
+        data: {
+          user_id: 'test_user_' + Math.random().toString(36).substr(2, 9),
+          user_name: userName,
+          gift_id: 'gift_001',
+          gift_name: '爱心',
+          gift_count: 1,
+          timestamp: Date.now(),
+        },
+        sign: 'test_signature'
+      };
+      
+      log(`发送礼物: 爱心 x1 (用户: ${userName})`);
+      
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          log(`✓ 发送成功: ${JSON.stringify(result)}`);
+        } else {
+          log(`✗ 发送失败: ${JSON.stringify(result)}`, true);
+        }
+      } catch (error) {
+        log(`✗ 请求错误: ${error.message}`, true);
+      }
+    }
+    
+    function quickSend(content) {
+      document.getElementById('danmakuContent').value = content;
+      document.getElementById('eventType').value = 'danmaku';
+      sendDanmaku();
+    }
+  </script>
+</body>
+</html>
