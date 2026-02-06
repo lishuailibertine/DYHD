@@ -217,9 +217,60 @@ POST https://your-domain.com/api/douyin/webhook
 
 详细对接指南请查看 [docs/douyin-integration-guide.md](docs/douyin-integration-guide.md)
 
-## 🧪 测试工具
+## 🧪 本地开发测试
 
-### 1. 在线测试页面
+### 问题说明
+
+抖音开放平台需要向公网地址推送 Webhook，但本地 `localhost` 无法从外网访问。
+
+### 解决方案
+
+#### 方法1：使用测试工具（推荐）⭐
+
+访问在线测试页面：
+```
+http://localhost:5000/test.html
+```
+
+手动发送测试弹幕和礼物，快速验证功能。
+
+#### 方法2：使用测试脚本
+
+**Windows:**
+```cmd
+scripts\test-local.bat
+```
+
+**Mac/Linux:**
+```bash
+chmod +x scripts/test-local.sh
+./scripts/test-local.sh
+```
+
+提供多种测试选项，支持批量测试。
+
+#### 方法3：使用 ngrok（接收真实推送）
+
+1. 下载安装 [ngrok](https://ngrok.com/)
+2. 配置认证：
+   ```bash
+   ngrok config add-authtoken YOUR_TOKEN
+   ```
+3. 启动内网穿透：
+   ```bash
+   ngrok http 5000
+   ```
+4. 复制公网地址（如：`https://abc123.ngrok-free.app`）
+5. 在抖音开放平台配置 Webhook：
+   ```
+   https://abc123.ngrok-free.app/api/douyin/webhook
+   ```
+
+#### 方法4：使用 frp
+
+参考 [本地开发测试指南](docs/local-development-guide.md) 了解详细配置。
+
+### 测试工具
 
 访问 `http://localhost:5000/test.html` 使用在线测试工具。
 

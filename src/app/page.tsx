@@ -549,6 +549,37 @@ export default function DouyinGame() {
             </Link>
           </div>
         </Card>
+
+        {/* 本地测试说明 */}
+        <Card className="mt-6 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 backdrop-blur-sm p-6 border-blue-500/50">
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-2">💡 本地开发测试</h3>
+            <p className="text-blue-200 mb-4">
+              想要在本地测试抖音推送？使用内网穿透工具将本地服务暴露到公网，让抖音可以推送消息到你的本地服务器。
+            </p>
+            <div className="space-y-2 text-sm text-blue-200">
+              <div className="flex items-start gap-2">
+                <span className="bg-blue-600/50 px-2 py-1 rounded text-xs font-semibold mt-0.5">方法1</span>
+                <span>使用 ngrok（推荐）：运行 <code className="bg-black/30 px-2 py-1 rounded">ngrok http 5000</code> 获取公网地址</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="bg-blue-600/50 px-2 py-1 rounded text-xs font-semibold mt-0.5">方法2</span>
+                <span>使用测试工具：访问 <code className="bg-black/30 px-2 py-1 rounded">/test.html</code> 手动发送测试消息</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="bg-blue-600/50 px-2 py-1 rounded text-xs font-semibold mt-0.5">方法3</span>
+                <span>运行测试脚本：Windows 执行 <code className="bg-black/30 px-2 py-1 rounded">scripts\test-local.bat</code>，Mac/Linux 执行 <code className="bg-black/30 px-2 py-1 rounded">./scripts/test-local.sh</code></span>
+              </div>
+            </div>
+            <div className="mt-4">
+              <a href="/test.html" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" className="border-blue-500/50 text-blue-200 hover:bg-blue-500/10">
+                  打开测试工具
+                </Button>
+              </a>
+            </div>
+          </div>
+        </Card>
         </div>
       </div>
 
