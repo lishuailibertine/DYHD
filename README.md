@@ -27,6 +27,43 @@
 
 ## 📦 快速开始
 
+### 同步到本地（Mac 用户）⭐
+
+如果你在扣子编程环境中，想把项目同步到你的 Mac 电脑：
+
+#### 方法1：使用 GitHub 同步（推荐）
+
+1. **在 GitHub 创建仓库**
+   - 访问 https://github.com/new
+   - 创建新仓库（不要勾选 README）
+
+2. **在扣子环境推送代码**
+   ```bash
+   cd /workspace/projects
+   scripts/sync-to-github.sh
+   ```
+
+3. **在 Mac 本地克隆项目**
+   ```bash
+   git clone https://github.com/你的用户名/你的仓库名.git
+   cd 你的仓库名
+   pnpm install
+   pnpm dev
+   ```
+
+详细指南：[docs/sync-to-local.md](docs/sync-to-local.md)
+
+#### 方法2：使用快速同步脚本
+
+在扣子环境运行：
+```bash
+cd /workspace/projects
+chmod +x scripts/sync-to-github.sh
+./scripts/sync-to-github.sh
+```
+
+然后按照提示操作即可。
+
 ### 1. 安装依赖
 
 ```bash
