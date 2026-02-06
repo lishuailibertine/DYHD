@@ -360,6 +360,65 @@ pnpm build
 pnpm start
 ```
 
+## 🌐 快速部署到公网
+
+### 方式1：一键部署脚本（推荐）⭐
+
+**Windows:**
+```cmd
+scripts\deploy-ngrok.bat
+```
+
+**Mac/Linux:**
+```bash
+chmod +x scripts/deploy-ngrok.sh
+./scripts/deploy-ngrok.sh
+```
+
+脚本会自动：
+1. ✅ 检查运行环境（Node.js、pnpm、ngrok）
+2. ✅ 启动游戏服务器（如果未运行）
+3. ✅ 启动 ngrok 内网穿透
+4. ✅ 显示公网访问地址
+
+获得公网地址后：
+- 访问 `https://your-ngrok-domain.ngrok-free.app/stream` 查看游戏
+- 配置抖音 Webhook 接收真实推送
+
+### 方式2：手动使用 ngrok
+
+```bash
+# 终端1：启动游戏服务器
+pnpm dev
+
+# 终端2：启动 ngrok
+ngrok http 5000
+```
+
+复制 ngrok 提供的 HTTPS 地址即可访问。
+
+### 方式3：部署到云服务器
+
+推荐用于生产环境，提供稳定可靠的服务。
+
+**快速部署步骤：**
+1. 购买云服务器（推荐：腾讯云轻量/阿里云 ECS）
+2. 安装 Node.js 和 pnpm
+3. 克隆代码并安装依赖
+4. 配置环境变量
+5. 使用 PM2 管理进程
+6. 配置 Nginx 反向代理
+7. 启用 HTTPS
+
+详细配置请查看：[docs/deployment-guide.md](docs/deployment-guide.md)
+
+### 部署方案对比
+
+| 方案 | 时间 | 难度 | 稳定性 | 适用场景 |
+|------|------|------|--------|----------|
+| **ngrok** | 5分钟 | ⭐ | ⭐⭐⭐ | 快速测试、演示 |
+| **云服务器** | 30分钟 | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 生产环境、长期运行 |
+
 ## 📊 推流性能优化
 
 - 使用固定分辨率（1920x1080）
