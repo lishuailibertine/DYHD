@@ -1,6 +1,6 @@
 # 抖音互动游戏系统 - 完整版
 
-一个功能完整的抖音弹幕互动游戏系统，支持实时直播展示、弹幕互动、礼物触发等能力。
+一个功能完整的抖音弹幕互动游戏系统，支持实时直播展示、弹幕互动、礼物触发等能力，可直接推流到抖音直播间。
 
 ## 🎯 功能特性
 
@@ -11,6 +11,7 @@
 - ✅ **多种技能** - 治疗、攻击、护盾、必杀技，可自定义参数
 - ✅ **实时通信** - WebSocket 长连接，低延迟推送
 - ✅ **直播展示** - 专为直播间设计的沉浸式界面
+- ✅ **推流支持** - 专用的推流模式页面，支持 OBS 推流
 - ✅ **游戏管理** - 完整的配置管理系统
 - ✅ **事件处理** - 支持弹幕、礼物、点赞、关注等多种事件
 
@@ -20,6 +21,7 @@
 - 🎨 **shadcn/ui** - 现代化 UI 组件库
 - 🔌 **WebSocket** - 实时双向通信
 - 🔐 **签名验证** - 完整的安全机制
+- 📺 **推流优化** - 专为直播设计的推流页面
 - 📱 **响应式设计** - 适配各种屏幕
 - ⚡ **高性能** - 优化的事件处理和动画
 
@@ -56,13 +58,26 @@ pnpm dev
 
 服务器将在 `http://localhost:5000` 启动。
 
+## 📺 页面导航
+
+### 1. 主页 (`/`)
+游戏演示和功能说明，包含快速入口。
+
+### 2. 直播预览 (`/live`)
+功能完整的直播展示页面，适合预览和测试。
+
+### 3. 推流模式 (`/stream`) ⭐
+**专为推流设计的页面**，适合使用 OBS 或其他推流软件推流到直播间。
+
+- ✅ 全屏布局，适合 1920x1080 分辨率
+- ✅ 无多余元素，画面清晰
+- ✅ 性能优化，确保流畅
+- ✅ 包含观众人数、弹幕展示等直播要素
+
+### 4. 管理后台 (`/admin`)
+完整的游戏配置管理系统。
+
 ## 🎮 使用指南
-
-### 页面导航
-
-1. **主页** (`/`) - 游戏演示和说明
-2. **直播间** (`/live`) - 直播展示页面
-3. **管理后台** (`/admin`) - 游戏配置管理
 
 ### 游戏玩法
 
@@ -70,10 +85,10 @@ pnpm dev
 
 | 技能 | 触发词 | 效果 | 冷却 |
 |------|--------|------|------|
-| 治疗术 | 治疗、回血、奶一口、加血 | 回复200点生命值 | 5秒 |
-| 普通攻击 | 攻击、打、砍、揍 | 造成(攻击力-防御)点伤害 | 2秒 |
-| 神圣护盾 | 护盾、防御、格挡 | 格挡50%伤害，持续5秒 | 10秒 |
-| 终极奥义 | 必杀技、大招、绝招 | 造成300%攻击力的巨额伤害 | 30秒 |
+| 治疗术 | 治疗、回血、奶一口 | 回复200点生命值 | 5秒 |
+| 普通攻击 | 攻击、打、砍 | 造成(攻击力-防御)点伤害 | 2秒 |
+| 神圣护盾 | 护盾、防御、格挡 | 格挡50%伤害 | 10秒 |
+| 终极奥义 | 必杀技、大招 | 造成300%攻击力的巨额伤害 | 30秒 |
 
 #### 礼物效果
 
@@ -85,29 +100,65 @@ pnpm dev
 | 跑车 | 必杀技 | 5x | 强力攻击 |
 | 火箭 | 必杀技 | 10x | 终极攻击 |
 
-礼物效果计算公式：
-```
-总倍率 = 基础倍率 × 数量倍率 × 价值倍率
-数量倍率 = log10(数量 + 1)
-价值倍率 = log10(价值 + 1)
-```
+## 📡 推流到直播间
+
+### 方式一：使用 OBS 推流（推荐）
+
+#### 步骤
+
+1. **下载安装 OBS**
+   - 访问 https://obsproject.com/
+   - 下载并安装 OBS Studio
+
+2. **配置浏览器源**
+   - 在 OBS 中添加"浏览器"来源
+   - URL: `http://localhost:5000/stream`
+   - 宽度: 1920
+   - 高度: 1080
+
+3. **设置推流参数**
+   - 在抖音直播伴侣中获取推流地址和密钥
+   - 在 OBS 推流设置中填入信息
+
+4. **开始推流**
+   - 点击"开始推流"按钮
+   - 游戏画面将显示在直播间
+
+### 方式二：使用抖音直播伴侣
+
+#### 步骤
+
+1. **下载安装直播伴侣**
+   - 访问 https://live.douyin.com/tool
+   - 下载并安装抖音直播伴侣
+
+2. **添加窗口源**
+   - 选择"窗口" → "应用窗口"
+   - 选择游戏页面所在的浏览器窗口
+
+3. **开始直播**
+   - 点击"开始直播"按钮
+
+### 方式三：浏览器全屏
+
+1. 在浏览器中打开推流页面：`http://localhost:5000/stream`
+2. 按 F11 进入全屏模式
+3. 在直播伴侣中选择屏幕录制或窗口录制
+
+详细推流指南请查看 [docs/streaming-guide.md](docs/streaming-guide.md)
 
 ## 🔧 配置管理
 
 ### 基础配置
-
-- **直播间 ID** - 抖音直播间唯一标识
-- **游戏 ID** - 游戏配置ID
-- **游戏时长** - 单局游戏时长（秒）
+- 直播间 ID
+- 游戏 ID
+- 游戏时长
 
 ### 角色配置
-
-- **玩家属性** - 名称、生命值、攻击力、防御力
-- **敌人属性** - 名称、生命值、攻击力、防御力
+- 玩家属性（名称、生命值、攻击力、防御力）
+- 敌人属性（名称、生命值、攻击力、防御力）
 
 ### 技能配置
-
-每个技能可配置：
 - 启用/禁用
 - 冷却时间
 - 效果值
@@ -135,46 +186,11 @@ pnpm dev
 }
 ```
 
-**支持的事件类型**:
-- `danmaku` - 弹幕
-- `gift` - 礼物
-- `like` - 点赞
-- `follow` - 关注
-- `enter_room` - 进入房间
-- `exit_room` - 离开房间
-
 ### 2. WebSocket 接口
 
 **地址**: `ws://localhost:5000/api/ws`
 
-**连接**:
-
-```javascript
-const ws = new WebSocket('ws://localhost:5000/api/ws');
-
-ws.onmessage = (event) => {
-  const message = JSON.parse(event.data);
-  // 处理消息
-};
-```
-
-**消息格式**:
-
-```json
-{
-  "type": "event",
-  "data": {
-    "type": "danmaku",
-    "data": {
-      "user_id": "用户ID",
-      "user_name": "用户昵称",
-      "content": "弹幕内容",
-      "skill_type": "heal",
-      "timestamp": 1234567890
-    }
-  }
-}
-```
+实时推送所有游戏事件。
 
 ## 🎯 对接抖音开放平台
 
@@ -187,34 +203,19 @@ ws.onmessage = (event) => {
 1. 登录后进入「应用管理」
 2. 点击「创建应用」
 3. 选择应用类型：网页应用
-4. 填写应用信息
 
 ### 3. 获取凭证
 
-创建应用后获得：
-- **App ID** - 应用唯一标识
-- **App Secret** - 应用密钥（请妥善保管）
+创建应用后获得 App ID 和 App Secret。
 
 ### 4. 配置 Webhook
 
 在应用配置中设置回调地址：
-
 ```
 POST https://your-domain.com/api/douyin/webhook
 ```
 
-要求：
-- 支持 HTTPS（生产环境）
-- 响应时间 < 3秒
-- 返回 HTTP 200
-
-### 5. 验证签名
-
-系统会自动验证所有请求的签名，确保消息安全。
-
-### 详细文档
-
-请查看 `docs/douyin-integration-guide.md` 获取完整的对接指南。
+详细对接指南请查看 [docs/douyin-integration-guide.md](docs/douyin-integration-guide.md)
 
 ## 🧪 测试工具
 
@@ -223,8 +224,6 @@ POST https://your-domain.com/api/douyin/webhook
 访问 `http://localhost:5000/test.html` 使用在线测试工具。
 
 ### 2. API 测试
-
-使用 curl 测试 Webhook 接口：
 
 ```bash
 curl -X POST -H "Content-Type: application/json" \
@@ -241,15 +240,6 @@ curl -X POST -H "Content-Type: application/json" \
   http://localhost:5000/api/douyin/webhook
 ```
 
-### 3. WebSocket 测试
-
-使用浏览器控制台测试：
-
-```javascript
-const ws = new WebSocket('ws://localhost:5000/api/ws');
-ws.onmessage = (event) => console.log(JSON.parse(event.data));
-```
-
 ## 📁 项目结构
 
 ```
@@ -260,6 +250,8 @@ ws.onmessage = (event) => console.log(JSON.parse(event.data));
 │   │   │   └── douyin/
 │   │   │       └── webhook/
 │   │   │           └── route.ts          # Webhook 接口
+│   │   ├── stream/
+│   │   │   └── page.tsx                  # 推流页面 ⭐
 │   │   ├── live/
 │   │   │   └── page.tsx                  # 直播展示页面
 │   │   ├── admin/
@@ -272,7 +264,8 @@ ws.onmessage = (event) => console.log(JSON.parse(event.data));
 │   │   └── douyin-game.ts                # 游戏服务
 │   └── components/ui/                    # shadcn/ui 组件
 ├── docs/
-│   └── douyin-integration-guide.md       # 对接指南
+│   ├── douyin-integration-guide.md       # 对接指南
+│   └── streaming-guide.md                # 推流指南 ⭐
 ├── public/
 │   └── test.html                         # 测试工具
 ├── server.js                             # WebSocket 服务器
@@ -282,23 +275,17 @@ ws.onmessage = (event) => console.log(JSON.parse(event.data));
 
 ## 🎨 界面预览
 
-### 主页
-- 游戏演示
-- 功能说明
-- 快速入口
+### 推流模式 (`/stream`)
+- 1920x1080 全屏布局
+- 左侧：玩家信息和技能
+- 中间：战斗场景和敌人
+- 右侧：实时弹幕列表
+- 无多余元素，适合推流
 
-### 直播页面
-- 角色面板
-- 战斗场景
-- 实时弹幕
-- 战斗日志
-- 技能展示
-
-### 管理后台
-- 游戏配置
-- 角色设置
-- 技能参数
-- 游戏控制
+### 直播预览 (`/live`)
+- 功能完整的展示页面
+- 包含所有功能
+- 适合预览和测试
 
 ## 🔒 安全建议
 
@@ -306,7 +293,6 @@ ws.onmessage = (event) => console.log(JSON.parse(event.data));
 2. **HTTPS** - 生产环境必须使用 HTTPS
 3. **签名验证** - 启用签名验证确保请求安全
 4. **限流** - 实现接口限流防止滥用
-5. **日志** - 记录所有请求便于排查问题
 
 ## 🚀 部署
 
@@ -323,20 +309,12 @@ pnpm build
 pnpm start
 ```
 
-### Docker 部署
+## 📊 推流性能优化
 
-```bash
-docker build -t douyin-game .
-docker run -p 5000:5000 douyin-game
-```
-
-## 📊 性能优化
-
-- 使用 WebSocket 实现实时通信
-- 优化动画性能（使用 CSS transform）
-- 虚拟滚动处理大量弹幕
+- 使用固定分辨率（1920x1080）
+- 优化动画性能
+- 虚拟滚动处理弹幕
 - 懒加载非关键资源
-- CDN 加速静态资源
 
 ## 🤝 贡献
 
@@ -346,12 +324,15 @@ docker run -p 5000:5000 douyin-game
 
 MIT License
 
-## 📞 联系方式
+## 📞 技术支持
 
-- 技术支持邮箱：tech-support@example.com
-- 项目文档：https://github.com/your-repo
-- 开发者社区：https://community.example.com
+- 项目文档：[README.md](README.md)
+- 推流指南：[docs/streaming-guide.md](docs/streaming-guide.md)
+- 对接指南：[docs/douyin-integration-guide.md](docs/douyin-integration-guide.md)
 
 ---
 
-**注意**：本系统仅供学习和演示使用，实际对接抖音开放平台时，请遵守抖音开放平台的使用规范和条款。
+**注意**：
+1. 推流模式页面专为直播推流设计，建议配合 OBS Studio 使用
+2. 对接抖音开放平台时，请遵守抖音开放平台的使用规范和条款
+3. 推流需要稳定的网络环境和合适的硬件配置

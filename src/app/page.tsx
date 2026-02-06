@@ -306,9 +306,15 @@ export default function DouyinGame() {
               </Button>
             </Link>
             <Link href="/live">
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Button variant="outline" className="border-purple-500/50 text-purple-200 hover:bg-purple-500/10">
                 <Play className="h-4 w-4 mr-2" />
-                进入直播间
+                直播预览
+              </Button>
+            </Link>
+            <Link href="/stream">
+              <Button className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700">
+                <Play className="h-4 w-4 mr-2" />
+                推流模式
               </Button>
             </Link>
           </div>
