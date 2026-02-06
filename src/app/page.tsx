@@ -64,59 +64,68 @@ export default function DouyinGame() {
 
   // WebSocket 连接
   useEffect(() => {
-    // 连接 WebSocket 服务器
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${wsProtocol}//${window.location.host}/api/ws`;
-    const ws = new WebSocket(wsUrl);
+    try {
+      // 连接 WebSocket 服务器
+      const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${wsProtocol}//${window.location.host}/api/ws`;
+      const ws = new WebSocket(wsUrl);
 
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-      addLog('✅ WebSocket 连接成功');
-    };
+      ws.onopen = () => {
+        console.log('WebSocket connected');
+        addLog('✅ WebSocket 连接成功');
+      };
 
-    ws.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        console.log('Received WebSocket message:', message);
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          console.log('Received WebSocket message:', message);
 
-        if (message.type === 'message' || message.type === 'event') {
-          handleWebSocketMessage(message.data);
+          if (message.type === 'message' || message.type === 'event') {
+            handleWebSocketMessage(message.data);
+          }
+        } catch (error) {
+          console.error('Error parsing WebSocket message:', error);
         }
-      } catch (error) {
-        console.error('Error parsing WebSocket message:', error);
-      }
-    };
+      };
 
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-      addLog('❌ WebSocket 连接错误');
-    };
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        addLog('❌ WebSocket 连接错误');
+      };
 
-    ws.onclose = () => {
-      console.log('WebSocket disconnected');
-      addLog('🔌 WebSocket 连接断开');
+      ws.onclose = () => {
+        console.log('WebSocket disconnected');
+        addLog('🔌 WebSocket 连接断开');
 
-      // 自动重连
-      const reconnectInterval = setInterval(() => {
-        addLog('🔄 尝试重连 WebSocket...');
-        const newWs = new WebSocket(wsUrl);
-        newWs.onopen = () => {
-          clearInterval(reconnectInterval);
-          addLog('✅ WebSocket 重连成功');
-        };
-        newWs.onerror = () => {
-          addLog('❌ WebSocket 重连失败');
-        };
-      }, 3000);
-    };
+        // 自动重连
+        const reconnectInterval = setInterval(() => {
+          addLog('🔄 尝试重连 WebSocket...');
+          try {
+            const newWs = new WebSocket(wsUrl);
+            newWs.onopen = () => {
+              clearInterval(reconnectInterval);
+              addLog('✅ WebSocket 重连成功');
+            };
+            newWs.onerror = () => {
+              addLog('❌ WebSocket 重连失败');
+            };
+          } catch (e) {
+            console.error('Reconnect error:', e);
+          }
+        }, 3000);
+      };
 
-    wsRef.current = ws;
+      wsRef.current = ws;
 
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-      }
-    };
+      return () => {
+        if (wsRef.current) {
+          wsRef.current.close();
+        }
+      };
+    } catch (error) {
+      console.error('WebSocket initialization error:', error);
+      addLog('❌ WebSocket 初始化失败');
+    }
   }, []);
 
   // 处理 WebSocket 消息
