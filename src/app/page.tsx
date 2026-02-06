@@ -178,6 +178,11 @@ export default function DouyinGame() {
     if (skill) {
       triggerSkill(skill);
     }
+
+    // 清理弹幕（5秒后）
+    setTimeout(() => {
+      setDanmakuList(prev => prev.filter(d => d.id !== id));
+    }, 5000);
   };
 
   // 触发技能
@@ -278,11 +283,6 @@ export default function DouyinGame() {
         addLog(`⚡ ${skill.name} 造成了 ${ultDamage} 点巨额伤害！`);
         break;
     }
-
-    // 清理弹幕
-    setTimeout(() => {
-      setDanmakuList(prev => prev.filter(d => d.id !== id));
-    }, 5000);
   };
 
   // 检查游戏结束
