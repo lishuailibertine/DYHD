@@ -86,9 +86,13 @@ app.prepare().then(() => {
     const url = new URL(request.url, `http://${request.headers.host}`);
 
     if (url.pathname === '/api/ws') {
+      // 游戏 WebSocket
       wss.handleUpgrade(request, socket, head, (ws) => {
         wss.emit('connection', ws, request);
       });
+    } else if (url.pathname.startsWith('/_next/webpack-hmr')) {
+      // Next.js HMR WebSocket - 让 Next.js 处理
+      handle(request, socket, head);
     } else {
       socket.destroy();
     }
