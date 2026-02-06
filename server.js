@@ -10,7 +10,7 @@ const port = 5001;
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
-// WebSocket 连接管理器
+// WebSocket 连接管理器（用于游戏）
 const wss = new WebSocketServer({ noServer: true });
 const clients = new Set();
 
@@ -90,9 +90,11 @@ app.prepare().then(() => {
       wss.handleUpgrade(request, socket, head, (ws) => {
         wss.emit('connection', ws, request);
       });
-    } else if (url.pathname.startsWith('/_next/webpack-hmr')) {
-      // Next.js HMR WebSocket - 让 Next.js 处理
-      handle(request, socket, head);
+    } else if (url.pathname.startsWith('/_next/')) {
+      // Next.js 内部请求（包括 HMR）
+      // 不要销毁 socket，让 Next.js 的 dev server 处理
+      // 这些请求会在 Next.js 内部处理
+      socket.destroy();
     } else {
       socket.destroy();
     }

@@ -99,13 +99,32 @@ GAME_ID=your_game_id
 
 ### 3. 启动开发服务器
 
+**模式1：开发模式（推荐日常开发）**
 ```bash
 pnpm dev
 ```
+- ✅ 支持热更新，代码修改后自动刷新
+- ❌ 不支持 WebSocket
+- 适用：前端开发、组件开发、样式调整
 
-服务器将在 `http://localhost:5001` 启动。
+**模式2：开发+WebSocket 模式（测试功能）**
+```bash
+pnpm dev:ws
+```
+- ✅ 支持游戏 WebSocket
+- ❌ 不支持热更新，需要手动刷新
+- 适用：测试 WebSocket、对接抖音推送
 
-**⚠️ 注意**：项目使用 **5001 端口**（而不是 5000），以避免与扣子编程环境的预览服务冲突。
+**模式3：生产模式**
+```bash
+pnpm build
+pnpm start
+```
+- ✅ 支持游戏 WebSocket
+- ✅ 性能优化
+- 适用：生产部署、真实直播
+
+详细说明：[启动模式说明](docs/startup-modes.md)
 
 ## 📺 页面导航
 

@@ -28,8 +28,8 @@ kill_port_if_listening() {
 
 echo "Clearing port ${PORT} before start."
 kill_port_if_listening
-echo "Starting HTTP service on port ${PORT} for dev..."
+echo "Starting HTTP service on port ${PORT} with WebSocket support..."
 
-# 使用 Next.js 标准开发服务器（开发环境）
-# 注意：此模式不支持游戏 WebSocket，使用 /test.html 测试即可
-npx next dev --port ${PORT}
+# 使用自定义服务器支持 WebSocket（开发环境，带 WebSocket）
+# 注意：此模式不支持 HMR（热模块替换），修改代码后需要手动刷新
+node server.js
