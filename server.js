@@ -1,5 +1,4 @@
 const { createServer } = require('http');
-const { parse } = require('url');
 const next = require('next');
 const { Server: WebSocketServer } = require('ws');
 
@@ -76,19 +75,23 @@ global.getClientCount = () => {
 };
 
 app.prepare().then(() => {
-  const server = createServer(async (req, res) => {
-    const parsedUrl = parse(req.url, true);
+  // 创建标准的 HTTP server
+  const server = createServer((req, res) => {
+    // 处理 HTTP 请求，由 Next.js 处理
+    handle(req, res);
+  });
 
-    // WebSocket 升级处理
-    if (parsedUrl.pathname === '/api/ws') {
-      server.handleUpgrade(req, req.socket, Buffer.alloc(0), (ws) => {
-        wss.emit('connection', ws, req);
+  // 处理 WebSocket 升级请求
+  server.on('upgrade', (request, socket, head) => {
+    const url = new URL(request.url, `http://${request.headers.host}`);
+
+    if (url.pathname === '/api/ws') {
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
       });
-      return;
+    } else {
+      socket.destroy();
     }
-
-    // 其他请求由 Next.js 处理
-    await handle(req, res, parsedUrl);
   });
 
   server.listen(port, (err) => {

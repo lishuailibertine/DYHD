@@ -99,17 +99,22 @@ async function handleDanmakuEvent(eventData: DouyinDanmakuEvent['data']) {
   const skillType = eventData.content ? parseSkillTrigger(eventData.content) : null;
 
   // 广播弹幕消息给所有连接的客户端
-  wsManager.broadcast({
-    type: 'danmaku',
-    data: {
-      user_id: eventData.user_id,
-      user_name: eventData.user_name,
-      content: eventData.content,
-      avatar_url: eventData.avatar_url,
-      skill_type: skillType,
-      timestamp: eventData.timestamp,
-    },
-  });
+  try {
+    wsManager.broadcast({
+      type: 'danmaku',
+      data: {
+        user_id: eventData.user_id,
+        user_name: eventData.user_name,
+        content: eventData.content,
+        avatar_url: eventData.avatar_url,
+        skill_type: skillType,
+        timestamp: eventData.timestamp,
+      },
+    });
+  } catch (error) {
+    console.error('Error broadcasting message:', error);
+    // 不抛出错误，继续处理请求
+  }
 }
 
 // 处理礼物事件
@@ -119,17 +124,22 @@ async function handleGiftEvent(eventData: DouyinDanmakuEvent['data']) {
   // 礼物触发特殊技能
   const skillType = 'ult'; // 礼物默认触发必杀技
 
-  wsManager.broadcast({
-    type: 'gift',
-    data: {
-      user_id: eventData.user_id,
-      user_name: eventData.user_name,
-      gift_name: eventData.gift_name,
-      gift_count: eventData.gift_count || 1,
-      skill_type: skillType,
-      timestamp: eventData.timestamp,
-    },
-  });
+  try {
+    wsManager.broadcast({
+      type: 'gift',
+      data: {
+        user_id: eventData.user_id,
+        user_name: eventData.user_name,
+        gift_name: eventData.gift_name,
+        gift_count: eventData.gift_count || 1,
+        skill_type: skillType,
+        timestamp: eventData.timestamp,
+      },
+    });
+  } catch (error) {
+    console.error('Error broadcasting message:', error);
+    // 不抛出错误，继续处理请求
+  }
 }
 
 // POST 接口 - 接收抖音弹幕 Webhook
@@ -158,11 +168,15 @@ export async function POST(request: NextRequest) {
 
       default:
         // 其他事件类型也转发给前端
-        const wsManager = WebSocketManager.getInstance();
-        wsManager.broadcast({
-          type: body.event_type,
-          data: body.data,
-        });
+        try {
+          const wsManager = WebSocketManager.getInstance();
+          wsManager.broadcast({
+            type: body.event_type,
+            data: body.data,
+          });
+        } catch (error) {
+          console.error('Error broadcasting message:', error);
+        }
         break;
     }
 
