@@ -1,10 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Shield, Sword, Heart, Zap } from 'lucide-react';
+import { Sparkles, Shield, Sword, Heart, Zap, ArrowRight, Play, Settings } from 'lucide-react';
 
 // 技能类型定义
 type SkillType = 'heal' | 'attack' | 'shield' | 'ult';
@@ -289,13 +290,38 @@ export default function DouyinGame() {
   }, [player.hp]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-4">
-      <div className="mx-auto max-w-6xl">
-        {/* 标题 */}
-        <div className="mb-6 text-center">
-          <h1 className="text-4xl font-bold text-white">抖音弹幕互动游戏</h1>
-          <p className="mt-2 text-purple-200">发送弹幕来触发技能：治疗、攻击、护盾、必杀技</p>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      {/* 导航栏 */}
+      <div className="bg-black/30 backdrop-blur-sm border-b border-white/10">
+        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-6 w-6 text-purple-400" />
+            <h1 className="text-xl font-bold text-white">抖音互动游戏</h1>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/admin">
+              <Button variant="outline" className="border-purple-500/50 text-purple-200 hover:bg-purple-500/10">
+                <Settings className="h-4 w-4 mr-2" />
+                管理
+              </Button>
+            </Link>
+            <Link href="/live">
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                <Play className="h-4 w-4 mr-2" />
+                进入直播间
+              </Button>
+            </Link>
+          </div>
         </div>
+      </div>
+
+      <div className="p-4">
+        <div className="mx-auto max-w-6xl">
+          {/* 标题 */}
+          <div className="mb-6 text-center">
+            <h1 className="text-4xl font-bold text-white">抖音弹幕互动游戏</h1>
+            <p className="mt-2 text-purple-200">发送弹幕来触发技能：治疗、攻击、护盾、必杀技</p>
+          </div>
 
         {/* 游戏主区域 */}
         <div className="grid gap-6 lg:grid-cols-3">
@@ -499,6 +525,25 @@ export default function DouyinGame() {
             </div>
           </div>
         </Card>
+
+        {/* 直播页面提示 */}
+        <Card className="mt-6 bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm p-6 border-purple-500/50">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">🎥 准备好开始直播了吗？</h3>
+              <p className="text-purple-200">
+                进入直播页面，在抖音直播间展示互动游戏，让观众通过弹幕和礼物参与游戏！
+              </p>
+            </div>
+            <Link href="/live">
+              <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg px-8">
+                进入直播间
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </Card>
+        </div>
       </div>
 
       <style jsx global>{`

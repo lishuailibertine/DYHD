@@ -26,7 +26,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     try {
       const data = JSON.parse(message.toString());
-      console.log('Received message:', data);
+      console.log('Received message from client:', data);
 
       // 广播消息给所有客户端
       clients.forEach(client => {
